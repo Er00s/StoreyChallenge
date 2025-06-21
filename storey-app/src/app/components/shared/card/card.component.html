@@ -1,0 +1,95 @@
+<div class="card-container">
+  <ng-container *ngIf="activeSupply; else noSupplies">
+    <div class="card" [class.is-open]="isOpen && initialSupplies.length > 1">
+      <div class="card-header">
+        <div class="header-content">
+          <div class="header-main" [attr.data-tooltip]="activeSupply.address">
+            <h2>{{ activeSupply.address }}</h2>
+            <div class="header-info">
+              <span><strong>NIS:</strong> {{ nis }}</span>
+              <span class="separator">|</span>
+              <span><strong>Alias:</strong> {{ activeSupply.alias }}</span>
+            </div>
+            <div class="tag-group">
+              <button *ngFor="let tag of tags" class="tag-button" [ngClass]="'tag-' + tag.type">
+                <i class="fas fa-plus"></i>
+                <span>{{ tag.text }}</span>
+              </button>
+            </div>
+          </div>
+          <div class="header-actions">
+            <div class="context-menu-container">
+              <button class="icon-button settings-button" (click)="toggleMenu(activeSupply.id, $event)">
+                <i class="fas fa-cog"></i>
+              </button>
+              <div class="context-menu" *ngIf="isMenuOpenForSupplyId === activeSupply.id">
+                <p class="menu-title">Opciones del suministro</p>
+                <button class="menu-item" (click)="editAlias(activeSupply.id)">
+                  <i class="fas fa-pencil-alt"></i><span>Editar alias</span>
+                </button>
+                <button class="menu-item danger" (click)="openUnlinkModal(activeSupply)">
+                  <i class="fas fa-trash-alt"></i><span>Desvincular suministro</span>
+                </button>
+              </div>
+            </div>
+            <button *ngIf="initialSupplies.length > 1" class="icon-button toggle-button" (click)="toggleOpen()">
+              <i *ngIf="isOpen" class="fas fa-chevron-up"></i>
+              <i *ngIf="!isOpen" class="fas fa-chevron-down"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="collapsible-content" *ngIf="isOpen && initialSupplies.length > 1">
+        <div class="content-body">
+
+          <!-- View for 2-3 supplies -->
+          <div *ngIf="initialSupplies.length <= 3" class="supplies-grid">
+            <div class="supply-card" *ngFor="let supply of otherSupplies">
+              <div class="supply-card-content" (click)="selectSupply(supply)">
+                <div class="top">Suministro asociado</div>
+                <h2>{{ supply.address }}</h2>
+                <span>
+                  Localidad: {{ supply.location }} | Alias: {{ supply.alias }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- View for >3 supplies -->
+          <div *ngIf="initialSupplies.length > 3" class="supplies-list-view">
+             <div class="list-header">
+              <h4>Encontrá más rápido</h4>
+              <p>Hemos reemplazado las tarjetas por un buscador para facilitar la selección.</p>
+            </div>
+            <app-search 
+              (onSelect)="selectSupply($event)"
+              [initialSupplyIdsToExclude]="[activeSupply!.id]"
+              [placeholder]="'Buscar suministro por dirección o alias'">
+            </app-search>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #noSupplies>
+    <div class="card no-supplies-card">
+      <div class="no-supplies-content">        
+        <h3>Sin suministros asociados actualmente</h3>
+        <p>Al momento no hay suministros asociados al usuario</p>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Confirmation Modal -->
+<app-confirmation-modal 
+  [isOpen]="isUnlinkModalOpen"
+  [title]="'Desvincular suministro'"
+  [question]="'¿Estás seguro de que querés desvincular este suministro?'"
+  [disclaimer]="'Esta acción eliminará la conexión entre el suministro y tu cuenta. No podrás acceder a la información o gestionar este suministro desde tu cuenta después de desvincularlo.'"
+  (onClose)="handleModalClose()"
+  (onConfirm)="handleUnlinkConfirm()">
+</app-confirmation-modal>

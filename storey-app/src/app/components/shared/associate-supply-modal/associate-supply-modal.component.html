@@ -1,0 +1,32 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <header class="modal-header">
+      <h2>Asociar un nuevo suministro</h2>
+      <button class="close-button" (click)="closeModal()"><i class="fas fa-times"></i></button>
+    </header>
+    
+    <div class="modal-body">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input 
+          type="text" 
+          placeholder="Buscar por dirección o alias"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="filterSupplies()">
+      </div>
+
+      <ul class="supplies-list">
+        <li *ngFor="let supply of filteredSupplies" (click)="selectSupply(supply)">
+          <div class="supply-info">
+            <p class="address">{{ supply.address }}</p>
+            <p class="alias">{{ supply.alias }} - {{ supply.location }}</p>
+          </div>
+          <button class="btn-associate">Asociar</button>
+        </li>
+        <li *ngIf="filteredSupplies.length === 0" class="no-results">
+          No se encontraron suministros.
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

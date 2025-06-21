@@ -1,0 +1,25 @@
+<div class="search-container">
+  <div class="search-box">
+    <i class="fas fa-search"></i>
+    <input 
+      type="text" 
+      [placeholder]="placeholder"
+      [(ngModel)]="searchTerm"
+      (input)="onSearch($event)"
+      (focus)="showResults = true">
+  </div>
+
+  <div class="results-panel" *ngIf="showResults && searchTerm.length > 0">
+    <div *ngIf="isLoading" class="loader">Buscando...</div>
+    
+    <ul *ngIf="!isLoading">
+      <li *ngFor="let supply of results" (click)="selectResult(supply)">
+        <p class="address">{{ supply.address }}</p>
+        <p class="alias">{{ supply.alias }}</p>
+      </li>
+      <li *ngIf="results.length === 0" class="no-results">
+        No se encontraron resultados para "{{ searchTerm }}".
+      </li>
+    </ul>
+  </div>
+</div>

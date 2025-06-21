@@ -1,0 +1,21 @@
+<div class="modal-overlay" *ngIf="isOpen" (click)="closeModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    
+    <div class="modal-header">
+      <h2>{{ title }}</h2>
+    </div>
+    
+    <div class="modal-body">
+      <p class="question">{{ question }}</p>
+      <p class="disclaimer">{{ disclaimer }}</p>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+      <button class="btn btn-danger" (click)="confirmAction()">Desvincular</button>
+    </div>
+  </div>
+</div>

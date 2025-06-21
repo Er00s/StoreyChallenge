@@ -1,0 +1,33 @@
+<div class="home-container">
+  <div class="card-wrapper">
+    <ng-container *ngIf="cardData$ | async as data; else loading">
+      <app-card       
+        [title]="data.title" 
+        [nis]="data.nis" 
+        [alias]="data.alias" 
+        [initialSupplies]="data.supplies"
+        [tags]="data.tags">
+      </app-card>
+    </ng-container>
+
+    <ng-template #loading>
+      <div class="loading-placeholder">Cargando tarjeta...</div>
+    </ng-template>
+  </div>
+
+  <div class="actions-wrapper">
+    <button class="btn-associate-new" (click)="openAssociateModal()">
+      <div class="icon-container">
+        <i class="fas fa-plus"></i>
+      </div>     
+      <span>Asociar suministro</span>
+    </button>
+  </div>
+</div>
+
+<app-associate-supply-modal
+  [isOpen]="isAssociateModalOpen"
+  [availableSupplies]="associableSupplies"
+  (onClose)="closeAssociateModal()"
+  (onSelect)="associateNewSupply($event)">
+</app-associate-supply-modal>

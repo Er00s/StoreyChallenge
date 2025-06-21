@@ -1,0 +1,188 @@
+:host {
+  --sidebar-bg: #076FF;
+  --primary-blue: #0052CC;
+  --text-light: #FFFFFF;
+  --text-muted: #B3BAC5;
+}
+
+.sidebar {
+  background-color: var(--primary-blue);
+  color: var(--text-light);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  box-sizing: border-box;
+  transition: width 0.3s ease;
+
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    padding: 0 0.5rem;
+
+    .logo {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 0;
+      white-space: nowrap;
+      opacity: 1;
+      transition: opacity 0.2s ease;
+    }
+
+    .toggle-btn {
+      background: none;
+      border: none;
+      color: var(--text-light);
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+  }
+
+  .sidebar-nav {
+    flex-grow: 1;
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      li {
+        a {
+          display: flex;
+          align-items: center;
+          padding: 0.9rem 0.5rem;
+          color: var(--text-light);
+          text-decoration: none;
+          border-radius: 8px;
+          transition: background-color 0.2s ease, color 0.2s ease;
+          white-space: nowrap;
+
+          i {
+            font-size: 1.2rem;
+            width: 40px;
+            text-align: center;
+            transition: margin-right 0.3s ease;
+          }
+
+          .nav-text {
+            opacity: 1;
+            transition: opacity 0.2s ease;
+          }
+
+          .arrow {
+            margin-left: auto;
+            transition: transform 0.3s ease;
+          }
+
+          &.active, &:hover {
+            background-color: var(--primary-blue);
+          }
+        }
+
+        &.has-submenu.open > a .arrow {
+          transform: rotate(180deg);
+        }
+
+        .submenu {
+          list-style: none;
+          padding-left: 40px;
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.4s ease-in-out;
+          a {
+            padding: 0.7rem 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            cursor: pointer;
+            &:hover {
+              opacity: 1;
+              color: white;
+              background-color: transparent;
+            }
+          }
+        }
+
+        &.has-submenu.open .submenu {
+          max-height: 200px;
+        }
+      }
+    }
+  }
+
+  .sidebar-footer {
+    padding: 0 0.5rem;
+    .user-profile {
+      display: flex;
+      align-items: center;
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #0052CC;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+      }
+      .user-info {
+        margin-left: 10px;
+        white-space: nowrap;
+        opacity: 1;
+        transition: opacity 0.2s ease;
+        .user-name {
+          margin: 0;
+          font-weight: 600;
+        }
+        .logout-link {
+          color: var(--text-muted);
+          text-decoration: none;
+          font-size: 0.8rem;
+          &:hover { color: white; }
+        }
+      }
+    }
+  }
+}
+
+// Collapsed state
+.sidebar.collapsed {
+  width: 88px;
+  .sidebar-header {
+    justify-content: center;
+    .logo { opacity: 0; }
+  }
+  .sidebar-nav a {
+    justify-content: center;
+    i { margin-right: 0; }
+    .nav-text { opacity: 0; }
+  }
+  .sidebar-footer .user-info {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 780px) {
+  .sidebar {
+    position: absolute;
+    z-index: 1100;
+    width: 280px; /* Full width on mobile when open */
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+
+    &.expanded {
+      transform: translateX(0);
+    }
+  }
+
+  // On mobile, the collapsed state is "off-screen", expanded is "on-screen"
+  .sidebar.collapsed {
+    transform: translateX(-100%);
+  }
+}
