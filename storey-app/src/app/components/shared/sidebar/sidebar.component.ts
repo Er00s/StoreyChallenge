@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { StateService, ServiceType } from '../../../services/state.service';
@@ -10,7 +10,7 @@ import { StateService, ServiceType } from '../../../services/state.service';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnChanges {
   @Input() isExpanded = true;
   @Output() toggle = new EventEmitter<void>();
 
@@ -18,11 +18,16 @@ export class SidebarComponent {
 
   constructor(private stateService: StateService) {}
 
-  onToggle() {
-    // Si la barra lateral está expandida y se va a colapsar, cerrar todos los submenús
-    if (this.isExpanded) {
+  ngOnChanges(changes: SimpleChanges) {
+    // Si isExpanded cambió a false (se colapsó), cerrar todos los submenús
+    if (changes['isExpanded'] && !changes['isExpanded'].currentValue) {
       this.isServicesMenuOpen = false;
     }
+  }
+
+  onToggle() {
+    // Siempre cerrar todos los submenús cuando se hace toggle
+    this.isServicesMenuOpen = false;
     this.toggle.emit();
   }
 

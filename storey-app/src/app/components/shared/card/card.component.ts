@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, HostListener, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -20,7 +20,7 @@ export interface Supply {
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
-export class CardComponent implements OnInit, OnDestroy {
+export class CardComponent implements OnInit, OnDestroy, OnChanges {
   @Input() title: string = "Cargando...";
   @Input() nis: string = "Cargando...";
   @Input() alias: string = "Cargando...";
@@ -47,21 +47,32 @@ export class CardComponent implements OnInit, OnDestroy {
   constructor(private mockDataService: MockDataService, private elementRef: ElementRef) {}
 
   ngOnInit(): void {
-    if (this.initialSupplies && this.initialSupplies.length > 0) {
-      this.activeSupply = this.initialSupplies[0];
-      this.otherSupplies = this.initialSupplies.slice(1);
-    } else {
-      this.activeSupply = null;
-    }
+    this.updateSupplies();
+  }
 
-    if (this.initialSupplies.length <= 1) {
-      this.isOpen = false;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['initialSupplies']) {
+      this.updateSupplies();
     }
   }
   
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private updateSupplies(): void {
+    if (this.initialSupplies && this.initialSupplies.length > 0) {
+      this.activeSupply = this.initialSupplies[0];
+      this.otherSupplies = this.initialSupplies.slice(1);
+    } else {
+      this.activeSupply = null;
+      this.otherSupplies = [];
+    }
+
+    if (this.initialSupplies.length <= 1) {
+      this.isOpen = false;
+    }
   }
 
   selectSupply(supply: Supply): void {
