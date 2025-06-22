@@ -44,12 +44,9 @@
   </div>
  
 
-  <main class="main-content" [ngClass]="{ 'collapsed-sidebar': !isMobile && !isSidebarExpanded }">
-    <header class="content-header">   
-  
-    </header>
+  <main class="main-content" [ngClass]="{ 'collapsed-sidebar': !isMobile && !isSidebarExpanded }">    
     
-    <div class="content-area">
+    <div class="content-area" [ngClass]="{'mobile-area': isMobile}">
       <router-outlet></router-outlet>
     </div>
   </main>
