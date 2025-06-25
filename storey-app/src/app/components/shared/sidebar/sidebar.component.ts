@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { StateService, ServiceType } from '../../../services/state.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,7 +14,7 @@ import { StateService, ServiceType } from '../../../services/state.service';
 export class SidebarComponent implements OnChanges {
   @Input() isExpanded = true;
   @Output() toggle = new EventEmitter<void>();
-
+  _authService = inject(AuthService)
   isServicesMenuOpen = false;
 
   constructor(private stateService: StateService) {}
@@ -44,5 +45,8 @@ export class SidebarComponent implements OnChanges {
     if (!this.isExpanded) {
       this.toggle.emit();
     }
+  }
+  logout(){
+    this._authService.logout();
   }
 }

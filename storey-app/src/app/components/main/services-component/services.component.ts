@@ -14,13 +14,13 @@ import { StateService, ServiceType } from '../../../services/state.service';
 import { AssociateSupplyModalComponent } from '../../shared/associate-supply-modal/associate-supply-modal.component';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-services',
   standalone: true,
   imports: [CommonModule, CardComponent, AssociateSupplyModalComponent],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  templateUrl: './services.component.html',
+  styleUrls: ['./services.component.scss'],
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class ServicesComponent implements OnInit, OnDestroy {
   private cardDataSubject = new BehaviorSubject<CardData | null>(null);
   cardData$: Observable<CardData | null> = this.cardDataSubject.asObservable();
 
