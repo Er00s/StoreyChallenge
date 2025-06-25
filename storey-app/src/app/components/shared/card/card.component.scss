@@ -11,7 +11,7 @@
   border-radius: 1rem;
   transition: border-radius 0.3s ease;
   flex: 1;
-  // When open, the bottom corners should be sharp
+  
   &.is-open {
     border-bottom-left-radius: 1rem;
     border-bottom-right-radius: 1rem;
@@ -20,7 +20,6 @@
 
 .card-header {
   padding: 1.5rem;
-  // This rule is to apply border-radius only on top-left
   border-top-left-radius: 50px;
 }
 
@@ -61,7 +60,7 @@
 
 .header-info {
   display: flex;
-  align-items: center;
+  align-items: start;
   gap: 1rem;
   font-size: 0.875rem;
   color: #4B5563;
@@ -339,5 +338,59 @@
       margin: 0;
       font-size: 1rem;
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .card-container {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 0.5rem;
+  }
+  .card {
+    border-radius: 0.75rem;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .card-header {
+    padding: 1rem;
+    border-top-left-radius: 1rem;
+  }
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .header-info {
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+  }
+  .header-actions {
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .collapsible-content {
+    padding: 1rem;
+  }
+  .supplies-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-header {
+    padding: 0.75rem;
+  }
+  .header-main h2 {
+    font-size: 1rem;
+  }
+  .supply-card-content h2 {
+    font-size: 1rem;
+  }
+  .collapsible-content {
+    padding: 0.5rem;
   }
 }
